@@ -17,10 +17,13 @@ import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class WeatherActivity extends Activity implements OnClickListener{
-
+	
+	private static final String WEATHER = "多云";
+	
 	private LinearLayout weatherInfoLayout;
 	/**
 	 * 用于显示城市名
@@ -55,6 +58,12 @@ public class WeatherActivity extends Activity implements OnClickListener{
 	 */
 	private Button refreshWeather;
 	
+	/**
+	 * 背景图片，根据天气更换
+	 */
+	private RelativeLayout rl_background;
+	private String weatherDesp;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,20 +71,26 @@ public class WeatherActivity extends Activity implements OnClickListener{
 		setContentView(R.layout.weather_layout);
 		// 初始化各控件
 		weatherInfoLayout = (LinearLayout) findViewById(R.id.weather_info_layout);
+		rl_background = (RelativeLayout) findViewById(R.id.rl_background);
 		cityNameText = (TextView) findViewById(R.id.city_name);
 		publishText = (TextView) findViewById(R.id.publish_text);
 		weatherDespText = (TextView) findViewById(R.id.weather_desp);
 		temp1Text = (TextView) findViewById(R.id.temp1);
 		temp2Text = (TextView) findViewById(R.id.temp2);
 		currentDateText = (TextView) findViewById(R.id.current_date);
+		
 		switchCity = (Button) findViewById(R.id.switch_city);
 		refreshWeather = (Button) findViewById(R.id.refresh_weather);
+		
 		String countyCode = getIntent().getStringExtra("county_code");
+		
 		if (!TextUtils.isEmpty(countyCode)) {
 			// 有县级代号时就去查询天气
 			publishText.setText("同步中...");
+			//同步状态所有的都隐藏 
 			weatherInfoLayout.setVisibility(View.INVISIBLE);
 			cityNameText.setVisibility(View.INVISIBLE);
+			
 			queryWeatherCode(countyCode);
 		} else {
 			// 没有县级代号时就直接显示本地天气
@@ -146,6 +161,7 @@ public class WeatherActivity extends Activity implements OnClickListener{
 						@Override
 						public void run() {
 							showWeather();
+							//changeBackground(weatherDesp);
 						}
 					});
 				}
@@ -176,8 +192,28 @@ public class WeatherActivity extends Activity implements OnClickListener{
 		currentDateText.setText(prefs.getString("current_date", ""));
 		weatherInfoLayout.setVisibility(View.VISIBLE);
 		cityNameText.setVisibility(View.VISIBLE);
+		System.out.println("zzzzzzzzzz");
+		String weatherDesp = (String) weatherDespText.getText();
+		 
+		System.out.println("zzzzzzzzzz");
+		if(weatherDesp.equals(WEATHER)){
+			
+			rl_background.setBackgroundResource(R.drawable.d);
+			System.out.println("xxxxxxxxxx");
+		}
+		System.out.println("zzzzzzzzzz");
+		
 		Intent intent = new Intent(this, AutoUpdateService.class);
 		startService(intent);
+		
+		
 	}
+	
+	private void changeBackground(String weatherDesp){
+		String weather = weatherDesp.toString().trim();
+		
+	}
+	
+	
 
 }
