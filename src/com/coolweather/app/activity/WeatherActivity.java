@@ -22,10 +22,8 @@ import android.widget.TextView;
 
 public class WeatherActivity extends Activity implements OnClickListener{
 	
-	private static final String CLOUD = "云";
-	private static final String RAIN = "雨";
-	private static final String CLOUDY = "阴";
-	private static final String SUN = "晴";
+	private static final String WEATHER = "多云";
+	
 	private LinearLayout weatherInfoLayout;
 	/**
 	 * 用于显示城市名
@@ -194,28 +192,16 @@ public class WeatherActivity extends Activity implements OnClickListener{
 		currentDateText.setText(prefs.getString("current_date", ""));
 		weatherInfoLayout.setVisibility(View.VISIBLE);
 		cityNameText.setVisibility(View.VISIBLE);
-		
+		System.out.println("zzzzzzzzzz");
 		String weatherDesp = (String) weatherDespText.getText();
-		
-		if(weatherDesp.contains(CLOUD)){
+		 
+		System.out.println("zzzzzzzzzz");
+		if(weatherDesp.equals(WEATHER)){
 			
-			rl_background.setBackgroundResource(R.drawable.cloud);
-			
-		}else if(weatherDesp.contains(RAIN)){
-			
-			rl_background.setBackgroundResource(R.drawable.rain);
-		
-			
-			
-		}else if(weatherDesp.contains(CLOUDY)){
-			
-			rl_background.setBackgroundResource(R.drawable.cloudy);
-			
-		}else if(weatherDesp.contains(SUN)){
-			
-			rl_background.setBackgroundResource(R.drawable.sun);
-			
+			rl_background.setBackgroundResource(R.drawable.d);
+			System.out.println("xxxxxxxxxx");
 		}
+		System.out.println("zzzzzzzzzz");
 		
 		Intent intent = new Intent(this, AutoUpdateService.class);
 		startService(intent);
